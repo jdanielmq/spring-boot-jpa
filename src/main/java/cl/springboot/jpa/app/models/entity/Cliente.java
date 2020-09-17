@@ -12,6 +12,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+
+
 @Entity
 @Table(name = "clientes")
 public class Cliente  implements Serializable{
@@ -24,13 +29,29 @@ public class Cliente  implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "nombre", nullable = false)
 	private String nombre;
+	
+	@Column(name = "apellido", nullable = false)
 	private String apellido;
+	
+
+	@Column(name = "email", nullable = false)
 	private String email;
 	
-	@Column(name = "fecha_creacion")
+	@Column(name = "fecha_creacion", nullable = false)
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createAt;
+	
+	/*se ejecuta antes de persistir el objeto en la base de datos
+	 * la funcionalidad es  crear o ejecutar antes de persistir*/
+//	@PrePersist
+//	public void prePersist() {
+//		createAt = new Date();
+//	}
+	
+	
 	public Long getId() {
 		return id;
 	}
