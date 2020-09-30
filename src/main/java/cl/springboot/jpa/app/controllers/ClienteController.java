@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import cl.springboot.jpa.app.models.dao.IClienteDao;
 import cl.springboot.jpa.app.models.entity.Cliente;
+import cl.springboot.jpa.app.models.services.IClienteService;
 
 @Controller
 @RequestMapping("/app")
@@ -23,12 +24,12 @@ import cl.springboot.jpa.app.models.entity.Cliente;
 public class ClienteController {
 	
 	@Autowired
-	IClienteDao IClienteDao;
+	IClienteService IClienteService;
 
 	@GetMapping("/listado-cliente")
 	public String getClientes(Model model){
 		model.addAttribute("titulo", "Cliente de la  Empresa");
-		model.addAttribute("listado", IClienteDao.findAll());
+		model.addAttribute("listado", IClienteService.findAll());
 		return "index";
 	}
 	
@@ -45,19 +46,26 @@ public class ClienteController {
 			model.addAttribute("titulo", "Formulario de Cliente");
 			return "form";
 		}
-		IClienteDao.save(cliente);
+		IClienteService.save(cliente);
 		status.setComplete();
-		return "redirect:listado-cliente";
+		return "redirect:/app/listado-cliente";
 	}
+
+	@RequestMapping("/eliminar/{id}")
+	public String eliminar(@PathVariable(value = "id") Long id) {
+		IClienteService.deleteOne(IClienteService.findOne(id));
+		return "redirect:/app/listado-cliente";
+	}
+	
 	
 	@RequestMapping("/form/{id}")
 	public String editar(@PathVariable(value = "id") Long id,   Map<String, Object> model) {
 		
 		Cliente cliente = null;
 		if(id > 0)
-		    cliente = IClienteDao.findOne(id);
+		    cliente = IClienteService.findOne(id);
 		else
-			return "redirect:listado-cliente";
+			return "redirect:/app/listado-cliente";
 		
 		model.put("titulo", "Editar de Cliente");
 		model.put("cliente",cliente);

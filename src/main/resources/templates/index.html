@@ -53,6 +53,8 @@
 					<td th:text="${cliente.createAt}"></td>
 					<td><a class="btn btn-primary btn-xs"
 						th:href="@{/app/form/} + ${cliente.id}" th:text="'Editar'"> </a></td>
+					<td><a class="btn btn-secondary btn-xs"
+						th:href="@{/app/eliminar/} + ${cliente.id}" th:text="'Eliminar'"> </a></td>						
 				</tr>
 			</tbody>
 		</table>
